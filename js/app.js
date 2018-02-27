@@ -1,6 +1,22 @@
 /*
  * Create a list that holds all of your cards
  */
+var allCards = [];
+
+var listOfCards = document.querySelectorAll('.card');
+
+for( let i = 0; i < listOfCards.length; i++) {
+  console.log ('i is ' + i);
+  listOfCards[i].outerHTML = listOfCards[i].outerHTML.replace('card','card open show');
+  console.log(listOfCards[i]);
+
+}
+
+var innerResult = listOfCards[0].innerHTML;
+console.log(innerResult);
+
+var outerResult = listOfCards[0].outerHTML;
+console.log(outerResult);
 
 
 /*
