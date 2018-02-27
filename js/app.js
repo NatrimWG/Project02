@@ -9,14 +9,32 @@ for( let i = 0; i < listOfCards.length; i++) {
   console.log ('i is ' + i);
   listOfCards[i].outerHTML = listOfCards[i].outerHTML.replace('card','card open show');
   console.log(listOfCards[i]);
-
 }
 
-var innerResult = listOfCards[0].innerHTML;
-console.log(innerResult);
+for( let i = 0; i < listOfCards.length; i++) {
+  console.log ('i is ' + i);
+  console.log(listOfCards[i]);
+}
 
-var outerResult = listOfCards[0].outerHTML;
-console.log(outerResult);
+// attempt to switch this to an array
+for( let i = 0; i < listOfCards.length; i++) {
+  allCards[i] = Array.prototype.push(listOfCards[i].outerHTML);
+}
+
+for( let i = 0; i < listOfCards.length; i++) {
+  listOfCards[i].outerHTML = allCards[i];
+}
+
+// for( let i = 0; i < listOfCards.length; i++) {
+//   var listOfCardsO[i] = listOfCards[i].outerHTML;
+// }
+
+
+//TODO: Remove once complete
+  //var innerResult = listOfCards[0].innerHTML;
+  //console.log(innerResult);
+  // var outerResult = listOfCards[0].outerHTML;
+  // console.log(outerResult);
 
 
 /*
