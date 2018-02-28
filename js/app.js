@@ -31,10 +31,16 @@ const PAIRS = [
   ["c16", "i16"]
 ]
 
+var match = false;
 
 // This function will copy the cards "picture" from NodeList into the Array
 for (let i = 0; i <= 15; i++) {
   allCards[i]=listOfCards[i].children[0].classList[1];
+
+  //initialize of cards no match or open show
+  listOfCards[i].classList.remove('open');
+  listOfCards[i].classList.remove('match');
+  listOfCards[i].classList.remove('show');
 }
 
 // Now we can shullfle the Array
@@ -75,51 +81,70 @@ for (var i = 0; i <= 15; i++) {
 
 //Set-up a function which is going to identify a card which has been clicked
 function respondToTheClick(evt) {
-  //obtain the ID of card
-  var cardID = getCardId(evt);
-  console.log(cardID);
+  //get card position
+  var cardPosition = getCardPosition (evt);
 
-  //turn cards
-  turnCard(cardID);
+  //TODO:switch based on matched, turned, not turned
+  switch (turnCard(cardPosition)) {
+    case "matched" :
+      break;
+    case "front" :
+      break;
+    case "back" :
+      break;
+  }
 }
 
 //Function returns the ID of li card tag
 function getCardId (evt) {
   if (evt.target.tagName === 'LI') {
-    //console.log(evt.target.id);
     return evt.target.id;
   } else if (evt.target.tagName === 'I') {
-    //console.log(evt.target.id);
-    // for (let i = 0; i <=15; i++) {
-    // console.log(PAIRS[i][1],evt.target.id,PAIRS[i][1] === evt.target.id, i);
-    // };
-
     let i = 0;
     while ( !(PAIRS[i][1] === evt.target.id)){
-      // console.log(i);
       i++;
     }
     return PAIRS[i][0];
   }
 }
 
-//Set-up a function which turns the card
-function turnCard(id) {
-  listOfCards[i].classList.toggle('open');
-  listOfCards[i].classList.toggle('show');
-
+function getCardPosition (evt) {
+  if (evt.target.tagName === 'LI') {
+    let i = 0;
+    while ( !(PAIRS[i][0] === evt.target.id)){
+      i++;
+    }
+    return i;
+  } else if (evt.target.tagName === 'I') {
+    let i = 0;
+    while ( !(PAIRS[i][1] === evt.target.id)){
+      i++;
+    }
+    return i;
+  }
 }
-// for( let i = 0; i < listOfCards.length; i++) {
-//   listOfCards[i].classList.toggle('open');
-//   listOfCards[i].classList.toggle('show');
-// }
 
-//listOfCards[0].addEventListener('click',respondToTheClick);
-//listOfCards.addEventListener('click',respondToTheClick);
-//deck.addEventListener('click',respondToTheClick);
+//Set-up a function which turns the card
+function turnCard(position) {
+  if (listOfCards[position].classList.contains('match')) {
+    console.log('contains');
+    return "matched";
+  } else if (listOfCards[position].classList.contains('open')){
+    return "front";
+  } else {
+    listOfCards[position].classList.toggle('open');
+    listOfCards[position].classList.toggle('show');
+    return "back";
+  }
+}
 
-
-
+//Function closes both cards
+function closeCard(pos1, pos2) {
+  listOfCards[pos1].classList.remove('open');
+  listOfCards[pos1].classList.remove('show');
+  listOfCards[pos2].classList.remove('open');
+  listOfCards[pos2].classList.remove('show');
+}
 
 
 /*
