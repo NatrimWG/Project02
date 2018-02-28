@@ -75,27 +75,38 @@ for (var i = 0; i <= 15; i++) {
 
 //Set-up a function which is going to identify a card which has been clicked
 function respondToTheClick(evt) {
-    if (evt.target.tagName === 'LI') {
-      console.log(evt.target.id);
-    } else if (evt.target.tagName === 'I') {
-      console.log(evt.target.id);
-      for (let i = 0; i <=15; i++) {
-      console.log(PAIRS[i][1],evt.target.id,PAIRS[i][1] === evt.target.id, i);
-      };
+  //obtain the ID of card
+  var cardID = getCardId(evt);
+  console.log(cardID);
 
-      let i = 0;
-      while ( !(PAIRS[i][1] === evt.target.id)){
-        console.log(i);
-        i++;
-      }
-      console.log(i);
+  //turn cards
+  turnCard(cardID);
+}
+
+//Function returns the ID of li card tag
+function getCardId (evt) {
+  if (evt.target.tagName === 'LI') {
+    //console.log(evt.target.id);
+    return evt.target.id;
+  } else if (evt.target.tagName === 'I') {
+    //console.log(evt.target.id);
+    // for (let i = 0; i <=15; i++) {
+    // console.log(PAIRS[i][1],evt.target.id,PAIRS[i][1] === evt.target.id, i);
+    // };
+
+    let i = 0;
+    while ( !(PAIRS[i][1] === evt.target.id)){
+      // console.log(i);
+      i++;
     }
-    // console.log('A card on position ' + evt.target.id + ' was clicked');
-    // console.log(evt.target.tagName );
+    return PAIRS[i][0];
+  }
 }
 
 //Set-up a function which turns the card
 function turnCard(id) {
+  listOfCards[i].classList.toggle('open');
+  listOfCards[i].classList.toggle('show');
 
 }
 // for( let i = 0; i < listOfCards.length; i++) {
