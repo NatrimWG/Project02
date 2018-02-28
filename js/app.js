@@ -1,11 +1,38 @@
 /*
  * Create a list that holds all of your cards
  */
-var allCards = [];
+
+//listOfCards is a NodeList holding all the html code with the cards
 var listOfCards = document.querySelectorAll('.card');
+
+//allCards is an Array holding the conetent of the cards
+var allCards = [];
+
+//TODO: deck can be deleted
 var deck = document.querySelectorAll('.deck');
 
-// This function will copy the cards "picture" into the array
+//Intializes an ID pairs of li and i elements
+const PAIRS = [
+  ["c01", "i01"],
+  ["c02", "i02"],
+  ["c03", "i03"],
+  ["c04", "i04"],
+  ["c05", "i05"],
+  ["c06", "i06"],
+  ["c07", "i07"],
+  ["c08", "i08"],
+  ["c09", "i09"],
+  ["c10", "i10"],
+  ["c11", "i11"],
+  ["c12", "i12"],
+  ["c13", "i13"],
+  ["c14", "i14"],
+  ["c15", "i15"],
+  ["c16", "i16"]
+]
+
+
+// This function will copy the cards "picture" from NodeList into the Array
 for (let i = 0; i <= 15; i++) {
   allCards[i]=listOfCards[i].children[0].classList[1];
 }
@@ -13,15 +40,10 @@ for (let i = 0; i <= 15; i++) {
 // Now we can shullfle the Array
 shuffle(allCards);
 
-//Based on the new Array we will update html5
+//Based on the new Array we will update NodeList and thus html
 for (let i = 0; i <= 15; i++) {
   listOfCards[i].children[0].classList.remove(listOfCards[i].children[0].classList[1]);
   listOfCards[i].children[0].classList.add(allCards[i]);
-}
-
-for( let i = 0; i < listOfCards.length; i++) {
-  listOfCards[i].classList.toggle('open');
-  listOfCards[i].classList.toggle('show');
 }
 
 /*
@@ -46,32 +68,48 @@ function shuffle(array) {
     return array;
 }
 
-// function respondToTheClick() {
-//   console.log('A card was clicked.');
-//}
+//Set-up a listner on each card
+for (var i = 0; i <= 15; i++) {
+  listOfCards[i].addEventListener('click', respondToTheClick);
+}
 
-// function respondToTheClick(evt) {
-//     console.log('A card was clicked: ' + evt.target.classList[1]);
+//Set-up a function which is going to identify a card which has been clicked
+function respondToTheClick(evt) {
+    if (evt.target.tagName === 'LI') {
+      console.log(evt.target.id);
+    } else if (evt.target.tagName === 'I') {
+      console.log(evt.target.id);
+      for (let i = 0; i <=15; i++) {
+      console.log(PAIRS[i][1],evt.target.id,PAIRS[i][1] === evt.target.id, i);
+      };
+
+      let i = 0;
+      while ( !(PAIRS[i][1] === evt.target.id)){
+        console.log(i);
+        i++;
+      }
+      console.log(i);
+    }
+    // console.log('A card on position ' + evt.target.id + ' was clicked');
+    // console.log(evt.target.tagName );
+}
+
+//Set-up a function which turns the card
+function turnCard(id) {
+
+}
+// for( let i = 0; i < listOfCards.length; i++) {
+//   listOfCards[i].classList.toggle('open');
+//   listOfCards[i].classList.toggle('show');
 // }
 
 //listOfCards[0].addEventListener('click',respondToTheClick);
 //listOfCards.addEventListener('click',respondToTheClick);
 //deck.addEventListener('click',respondToTheClick);
 
-function respondToTheClick(evt) {
-    if (evt.target.tagName === 'LI') {
-      console.log(evt.target.id);
-    } else if (evt.target.tagName === 'I') {
-      console.log(evt.target.id);
-    }
-    // console.log('A card on position ' + evt.target.id + ' was clicked');
-    // console.log(evt.target.tagName );
 
-}
 
-for (var i = 0; i <= 15; i++) {
-  listOfCards[i].addEventListener('click', respondToTheClick);
-}
+
 
 /*
  * set up the event listener for a card. If a card is clicked:
