@@ -5,37 +5,40 @@ var allCards = [];
 
 var listOfCards = document.querySelectorAll('.card');
 
-for( let i = 0; i < listOfCards.length; i++) {
-  console.log ('i is ' + i);
-  listOfCards[i].outerHTML = listOfCards[i].outerHTML.replace('card','card open show');
-  console.log(listOfCards[i]);
+// This function will copy the cards "picture" into the array
+for (let i = 0; i <= 15; i++) {
+  allCards[i]=listOfCards[i].children[0].classList[1];
 }
 
-for( let i = 0; i < listOfCards.length; i++) {
-  console.log ('i is ' + i);
-  console.log(listOfCards[i]);
-}
+// Now we can shullfle the Array
+shuffle(allCards);
 
-// attempt to switch this to an array
-for( let i = 0; i < listOfCards.length; i++) {
-  allCards[i] = Array.prototype.push(listOfCards[i].outerHTML);
-}
-
-for( let i = 0; i < listOfCards.length; i++) {
-  listOfCards[i].outerHTML = allCards[i];
+//Based on the new Array we will update html5
+for (let i = 0; i <= 15; i++) {
+  listOfCards[i].children[0].classList.remove(listOfCards[i].children[0].classList[1]);
+  listOfCards[i].children[0].classList.add(allCards[i]);
 }
 
 // for( let i = 0; i < listOfCards.length; i++) {
-//   var listOfCardsO[i] = listOfCards[i].outerHTML;
+//   console.log ('i is ' + i);
+//   listOfCards[i].outerHTML = listOfCards[i].outerHTML.replace('card','card open show');
+//   console.log(listOfCards[i]);
 // }
 
+for( let i = 0; i < listOfCards.length; i++) {
+  console.log ('i is ' + i);
+  console.log(listOfCards[i].classList);
+}
 
-//TODO: Remove once complete
-  //var innerResult = listOfCards[0].innerHTML;
-  //console.log(innerResult);
-  // var outerResult = listOfCards[0].outerHTML;
-  // console.log(outerResult);
+for( let i = 0; i < listOfCards.length; i++) {
+  listOfCards[i].classList.toggle('open');
+  listOfCards[i].classList.toggle('show');
+}
 
+for( let i = 0; i < listOfCards.length; i++) {
+  console.log ('i is ' + i);
+  console.log(listOfCards[i].classList);
+}
 
 /*
  * Display the cards on the page
