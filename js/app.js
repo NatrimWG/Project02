@@ -31,7 +31,7 @@ const PAIRS = [
   ["c16", "i16"]
 ]
 
-var match = false;
+var match = [false, -1, 16];
 
 // This function will copy the cards "picture" from NodeList into the Array
 for (let i = 0; i <= 15; i++) {
@@ -91,6 +91,15 @@ function respondToTheClick(evt) {
     case "front" :
       break;
     case "back" :
+      if (match[0] === false) {
+        match[0] = true;
+        match[1] = cardPosition;
+      } else {
+        compare(cardPosition, match[1]);
+        // if true
+        // if false
+        // if last card
+      }
       break;
   }
 }
@@ -146,6 +155,10 @@ function closeCard(pos1, pos2) {
   listOfCards[pos2].classList.remove('show');
 }
 
+function compare (pos1, pos2) {
+  console.log(listOfCards[pos1].children[0].classList[1]);
+  console.log(listOfCards[pos2].children[0].classList[1]);
+}
 
 /*
  * set up the event listener for a card. If a card is clicked:
