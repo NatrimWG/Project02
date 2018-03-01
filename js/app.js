@@ -31,7 +31,12 @@ const PAIRS = [
   ["c16", "i16"]
 ]
 
+//var match = [0, -1, -1, 16];
 var match = [false, -1, 16];
+
+//wait promise declared
+const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+//wait(1000).then(() => console.log("10 seconds")).catch(console.log("failure"));
 
 // This function will copy the cards "picture" from NodeList into the Array
 for (let i = 0; i <= 15; i++) {
@@ -83,7 +88,7 @@ for (var i = 0; i <= 15; i++) {
 function respondToTheClick(evt) {
   //get card position
   var cardPosition = getCardPosition (evt);
-  console.log(cardPosition);
+  console.log("Card position:",cardPosition);
 
 
   //TODO:switch based on matched, turned, not turned
@@ -98,8 +103,9 @@ function respondToTheClick(evt) {
         match[1] = cardPosition;
       } else {
         //comparing two cards
-        if (compare(cardPosition, match[1])) {
+        if (compareCards(cardPosition, match[1])) {
           //cards are same
+          console.log("Cards are same");
           //mark cards as matched
           matchCards(cardPosition, match[1]);
           match[0] = false;
@@ -113,9 +119,8 @@ function respondToTheClick(evt) {
           };
         } else {
           //cards are different
-
+          console.log("Cards are different");
           //show cards for a while
-          wait(3000);  //3 seconds in milliseconds
 
           //turn both cards
           //closeCards(cardPosition, match[1]);
@@ -129,6 +134,17 @@ function respondToTheClick(evt) {
       break;
   }
 }
+
+// const wait = (ms) => {
+//   return new Promise((resolve) => {
+//     setTimeout(resolve, ms);
+//   });
+// }
+
+// const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+// setTimeout(() => saySomething("10 seconds passed"), 10000);
+// wait(10000).then(() => saySomething("10 seconds")).catch(failureCallback);
+// wait(1000).then(() => console.log("10 seconds")).catch(console.log("failure"));
 
 //Function returns the ID of li card tag
 function getCardId (evt) {
@@ -186,12 +202,18 @@ function closeCards(pos1, pos2) {
   listOfCards[pos2].classList.remove('show');
 }
 
+var final = false;
+
 function compare (pos1, pos2) {
   // console.log(listOfCards[pos1].children[0].classList[1]);
   // console.log(listOfCards[pos2].children[0].classList[1]);
   if (listOfCards[pos1].children[0].classList[1] === listOfCards[pos2].children[0].classList[1]) {
+    final = true;
     return true;
-  } else return false;
+  } else {
+      final = false;
+      return false;
+  }
 }
 
 function matchCards (pos1, pos2) {
@@ -199,13 +221,25 @@ function matchCards (pos1, pos2) {
   listOfCards[pos2].classList.add('match');
 }
 
-//function from stackoverflow http://stackoverflow.com/questions/14226803
-function wait(ms){
-   var start = new Date().getTime();
-   var end = start;
-   while(end < start + ms) {
-     end = new Date().getTime();
-  }
+
+
+function decision(dec) {
+  if (dec === true) {
+    console.log("Decision:",dec);
+    return true;
+  } else {
+      console.log("Decision:",dec);
+      return false;
+    }
+}
+
+function compareCards(pos1, pos2) {
+    //let c = compare (pos1, pos2);
+    //console.log("Result:",c);
+    //wait(1000).then(() => decision(c)).catch(c(pos1, pos2));
+    wait(1000).then(() => decision(final)).catch(compare(pos1, pos2));
+    //console.log("Result:",c);
+
 }
 
 /*
