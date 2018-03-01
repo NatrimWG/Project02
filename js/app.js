@@ -31,10 +31,10 @@ const PAIRS = [
   ["c16", "i16"]
 ]
 
-//var match = [0, -1, -1, 16];
-var match = [false, -1, 16];
+var match = [false, 16];
 var cardPos1 = -1;
 var cardPos2 = -1;
+var moves = 0;
 
 //Wait variable via Promise feature declared -
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -60,14 +60,6 @@ function cardInit() {
   }
 }
 
-
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
-
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
@@ -90,7 +82,7 @@ function addCardListener() {
   }
 }
 
-//Remove listeners
+//Remove listeners from cards
 function removeCardListener() {
   for (var i = 0; i <= 15; i++) {
     listOfCards[i].removeEventListener('click', respondToTheClick);
@@ -101,8 +93,8 @@ function removeCardListener() {
 function respondToTheClick(evt) {
   //get card position
   var cardPosition = getCardPosition (evt);
+  //TODO: remove afterwards
   console.log("Card position:",cardPosition);
-
 
   //TODO:switch based on matched, turned, not turned
   switch (turnCard(cardPosition)) {
@@ -117,23 +109,13 @@ function respondToTheClick(evt) {
       } else {
         //comparing two cards
         cardPos2 = cardPosition;
+        moves += 1;
         removeCardListener();
         wait(2000).then(() => decision(final)).catch(compare(cardPos1, cardPos2));
       }
       break;
   }
 }
-
-// const wait = (ms) => {
-//   return new Promise((resolve) => {
-//     setTimeout(resolve, ms);
-//   });
-// }
-
-// const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
-// setTimeout(() => saySomething("10 seconds passed"), 10000);
-// wait(10000).then(() => saySomething("10 seconds")).catch(failureCallback);
-// wait(1000).then(() => console.log("10 seconds")).catch(console.log("failure"));
 
 //Function returns the ID of li card tag
 function getCardId (evt) {
@@ -221,6 +203,9 @@ function decision(dec) {
     match[1] -= 2;
     addCardListener();
     //TODO: check if end game
+    if (match[1] <= 0) {
+      gameWon();
+    }
 
   } else {
       console.log("Decision:",dec,"...Cards are different");
@@ -231,36 +216,17 @@ function decision(dec) {
     }
 }
 
-function compareCards(pos1, pos2) {
-    // if (compareCards(cardPosition, match[1])) {
-    //   //cards are same
-    //   console.log("Cards are same");
-    //   //mark cards as matched
-    //   matchCards(cardPosition, match[1]);
-    //   match[0] = false;
-    //   match[1] = -1;
-    //   //substract number of cards left
-    //   match[2] -= 2;
-    //
-    //   //check against last card and end game
-    //   if (match[2] === 0) {
-    //     //TODO: end game
-    //   };
-    // } else {
-    //   //cards are different
-    //   console.log("Cards are different");
-    //   //show cards for a while
-    //
-    //   //turn both cards
-    //   //closeCards(cardPosition, match[1]);
-    //   match[0] = false;
-    //   match[1] = -1;
-    // }
-    // // if true
-    // // if false
-    // // if last card
-    // }
+function gameWon() {
+  alert('You have WON the game within '+ moves+ " moves");
+  cardInit ();
 }
+
+/*
+ * Display the cards on the page
+ *   - shuffle the list of cards using the provided "shuffle" method below
+ *   - loop through each card and create its HTML
+ *   - add each card's HTML to the page
+ */
 
 /*
  * set up the event listener for a card. If a card is clicked:
@@ -273,6 +239,6 @@ function compareCards(pos1, pos2) {
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 
-//Main Body
+//Code which will fire during the page load
 cardInit ();
 addCardListener();
