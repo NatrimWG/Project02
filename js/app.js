@@ -8,9 +8,6 @@ var listOfCards = document.querySelectorAll('.card');
 //allCards is an Array holding the conetent of the cards
 var allCards = [];
 
-//TODO: deck can be deleted
-var deck = document.querySelectorAll('.deck');
-
 //Intializes an ID pairs of li and i elements
 const PAIRS = [
   ["c01", "i01"],
@@ -31,10 +28,16 @@ const PAIRS = [
   ["c16", "i16"]
 ]
 
+//Global variables for card matching
 var match = [false, 16];
 var cardPos1 = -1;
 var cardPos2 = -1;
+
+//Global variables for number of moves and star rating
 var moves = 0;
+var movesHTML = document.querySelector('.moves');
+var stars = 3;
+var starsHTML = document.querySelector('.stars');
 
 //Wait variable via Promise feature declared -
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -109,24 +112,17 @@ function respondToTheClick(evt) {
       } else {
         //comparing two cards
         cardPos2 = cardPosition;
-        moves += 1;
         removeCardListener();
         wait(2000).then(() => decision(final)).catch(compare(cardPos1, cardPos2));
+        //update moves
+        moves += 1;
+        updateMove();
+        //update stars
+        if (moves % 20 === 0) {
+          removeStar();
+        }
       }
       break;
-  }
-}
-
-//Function returns the ID of li card tag
-function getCardId (evt) {
-  if (evt.target.tagName === 'LI') {
-    return evt.target.id;
-  } else if (evt.target.tagName === 'I') {
-    let i = 0;
-    while ( !(PAIRS[i][1] === evt.target.id)){
-      i++;
-    }
-    return PAIRS[i][0];
   }
 }
 
@@ -187,13 +183,13 @@ function compare (pos1, pos2) {
   }
 }
 
+//Marks cards as matched
 function matchCards (pos1, pos2) {
   listOfCards[pos1].classList.add('match');
   listOfCards[pos2].classList.add('match');
 }
 
-
-
+//Executes the decision based on math or mis-match
 function decision(dec) {
   if (dec === true) {
     console.log("Decision:",dec,"...Cards are same");
@@ -202,7 +198,7 @@ function decision(dec) {
     match[0] = false;
     match[1] -= 2;
     addCardListener();
-    //TODO: check if end game
+    //Check if game ended - all cards are matched
     if (match[1] <= 0) {
       gameWon();
     }
@@ -217,8 +213,47 @@ function decision(dec) {
 }
 
 function gameWon() {
-  alert('You have WON the game within '+ moves+ " moves");
+  alert('CONGRATULATIONS! You have WON the game within '+ moves+ " moves");
+  gameInit();
+}
+
+function gameInit(){
   cardInit ();
+  stars = 3;
+  updateStars();
+  moves = 0;
+  updateMove();
+}
+
+function updateMove() {
+    movesHTML.textContent = moves;
+}
+
+function removeStar() {
+  switch stars {
+    case 3 :
+      stars -= 1;
+      starsHTML.children[0].children[0].remove("fa-star");
+      break;
+    case 2 :
+      stars -= 1;
+      starsHTML.children[1].children[0].remove("fa-star");
+      break;
+    case 1 :
+      stars -= 1;
+      starsHTML.children[2].children[0].remove("fa-star");
+    case 0 :
+      break;
+  }
+
+  //starsHTML.
+}
+
+function updateStar() {
+  //starsHTML.
+  starsHTML.children[0].children[0].add("fa-star");
+  starsHTML.children[1].children[0].add("fa-star");
+  starsHTML.children[2].children[0].add("fa-star");
 }
 
 /*
