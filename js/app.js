@@ -45,6 +45,9 @@ var final = false;
 //Variable restart
 var restart = document.querySelector('.restart');
 
+//Variable timer
+const startTimer = new Date().getTime();
+
 //Wait variable via Promise feature declared -
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 
