@@ -8,6 +8,9 @@ var listOfCards = document.querySelectorAll('.card');
 //allCards is an Array holding the conetent of the cards
 var allCards = [];
 
+//TODO: deck can be deleted
+var deck = document.querySelectorAll('.deck');
+
 //Intializes an ID pairs of li and i elements
 const PAIRS = [
   ["c01", "i01"],
@@ -229,21 +232,14 @@ function updateMove() {
     movesHTML.textContent = moves;
 }
 
+function getStars() {
+  return stars;
+}
+
 function removeStar() {
-  switch stars {
-    case 3 :
-      stars -= 1;
-      starsHTML.children[0].children[0].remove("fa-star");
-      break;
-    case 2 :
-      stars -= 1;
-      starsHTML.children[1].children[0].remove("fa-star");
-      break;
-    case 1 :
-      stars -= 1;
-      starsHTML.children[2].children[0].remove("fa-star");
-    case 0 :
-      break;
+  stars -= 1;
+  switch (stars) {
+
   }
 
   //starsHTML.
@@ -251,9 +247,6 @@ function removeStar() {
 
 function updateStar() {
   //starsHTML.
-  starsHTML.children[0].children[0].add("fa-star");
-  starsHTML.children[1].children[0].add("fa-star");
-  starsHTML.children[2].children[0].add("fa-star");
 }
 
 /*
