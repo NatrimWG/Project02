@@ -33,29 +33,33 @@ const PAIRS = [
 
 //var match = [0, -1, -1, 16];
 var match = [false, -1, 16];
+var cardPos1 = -1;
+var cardPos2 = -1;
 
-//wait promise declared
+//Wait variable via Promise feature declared -
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
-//wait(1000).then(() => console.log("10 seconds")).catch(console.log("failure"));
 
 // This function will copy the cards "picture" from NodeList into the Array
-for (let i = 0; i <= 15; i++) {
-  allCards[i]=listOfCards[i].children[0].classList[1];
+function cardInit() {
+  for (let i = 0; i <= 15; i++) {
+    allCards[i]=listOfCards[i].children[0].classList[1];
 
-  //initialize of cards no match or open show
-  listOfCards[i].classList.remove('open');
-  listOfCards[i].classList.remove('match');
-  listOfCards[i].classList.remove('show');
+    //initialize of cards no match or open show
+    listOfCards[i].classList.remove('open');
+    listOfCards[i].classList.remove('match');
+    listOfCards[i].classList.remove('show');
+  }
+
+  // Now we can shullfle the Array
+  shuffle(allCards);
+
+  //Based on the new Array we will update NodeList and thus html
+  for (let i = 0; i <= 15; i++) {
+    listOfCards[i].children[0].classList.remove(listOfCards[i].children[0].classList[1]);
+    listOfCards[i].children[0].classList.add(allCards[i]);
+  }
 }
 
-// Now we can shullfle the Array
-shuffle(allCards);
-
-//Based on the new Array we will update NodeList and thus html
-for (let i = 0; i <= 15; i++) {
-  listOfCards[i].children[0].classList.remove(listOfCards[i].children[0].classList[1]);
-  listOfCards[i].children[0].classList.add(allCards[i]);
-}
 
 /*
  * Display the cards on the page
@@ -79,9 +83,18 @@ function shuffle(array) {
     return array;
 }
 
-//Set-up a listner on each card
-for (var i = 0; i <= 15; i++) {
-  listOfCards[i].addEventListener('click', respondToTheClick);
+//Add listners on cards
+function addCardListener() {
+  for (var i = 0; i <= 15; i++) {
+    listOfCards[i].addEventListener('click', respondToTheClick);
+  }
+}
+
+//Remove listeners
+function removeCardListener() {
+  for (var i = 0; i <= 15; i++) {
+    listOfCards[i].removeEventListener('click', respondToTheClick);
+  }
 }
 
 //Set-up a function which is going to identify a card which has been clicked
@@ -100,36 +113,12 @@ function respondToTheClick(evt) {
     case "back" :
       if (match[0] === false) {
         match[0] = true;
-        match[1] = cardPosition;
+        cardPos1 = cardPosition;
       } else {
         //comparing two cards
-        if (compareCards(cardPosition, match[1])) {
-          //cards are same
-          console.log("Cards are same");
-          //mark cards as matched
-          matchCards(cardPosition, match[1]);
-          match[0] = false;
-          match[1] = -1;
-          //substract number of cards left
-          match[2] -= 2;
-
-          //check against last card and end game
-          if (match[2] === 0) {
-            //TODO: end game
-          };
-        } else {
-          //cards are different
-          console.log("Cards are different");
-          //show cards for a while
-
-          //turn both cards
-          //closeCards(cardPosition, match[1]);
-          match[0] = false;
-          match[1] = -1;
-        }
-        // if true
-        // if false
-        // if last card
+        cardPos2 = cardPosition;
+        removeCardListener();
+        wait(2000).then(() => decision(final)).catch(compare(cardPos1, cardPos2));
       }
       break;
   }
@@ -225,21 +214,52 @@ function matchCards (pos1, pos2) {
 
 function decision(dec) {
   if (dec === true) {
-    console.log("Decision:",dec);
-    return true;
+    console.log("Decision:",dec,"...Cards are same");
+    //Cards are same - match them
+    matchCards(cardPos1, cardPos2);
+    match[0] = false;
+    match[1] -= 2;
+    addCardListener();
+    //TODO: check if end game
+
   } else {
-      console.log("Decision:",dec);
-      return false;
+      console.log("Decision:",dec,"...Cards are different");
+      //Cards are different - turn them back
+      closeCards(cardPos1, cardPos2);
+      match[0] = false;
+      addCardListener();
     }
 }
 
 function compareCards(pos1, pos2) {
-    //let c = compare (pos1, pos2);
-    //console.log("Result:",c);
-    //wait(1000).then(() => decision(c)).catch(c(pos1, pos2));
-    wait(1000).then(() => decision(final)).catch(compare(pos1, pos2));
-    //console.log("Result:",c);
-
+    // if (compareCards(cardPosition, match[1])) {
+    //   //cards are same
+    //   console.log("Cards are same");
+    //   //mark cards as matched
+    //   matchCards(cardPosition, match[1]);
+    //   match[0] = false;
+    //   match[1] = -1;
+    //   //substract number of cards left
+    //   match[2] -= 2;
+    //
+    //   //check against last card and end game
+    //   if (match[2] === 0) {
+    //     //TODO: end game
+    //   };
+    // } else {
+    //   //cards are different
+    //   console.log("Cards are different");
+    //   //show cards for a while
+    //
+    //   //turn both cards
+    //   //closeCards(cardPosition, match[1]);
+    //   match[0] = false;
+    //   match[1] = -1;
+    // }
+    // // if true
+    // // if false
+    // // if last card
+    // }
 }
 
 /*
@@ -252,3 +272,7 @@ function compareCards(pos1, pos2) {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
+
+//Main Body
+cardInit ();
+addCardListener();
