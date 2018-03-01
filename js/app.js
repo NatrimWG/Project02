@@ -8,9 +8,6 @@ var listOfCards = document.querySelectorAll('.card');
 //allCards is an Array holding the conetent of the cards
 var allCards = [];
 
-//TODO: deck can be deleted
-var deck = document.querySelectorAll('.deck');
-
 //Intializes an ID pairs of li and i elements
 const PAIRS = [
   ["c01", "i01"],
@@ -41,6 +38,12 @@ var moves = 0;
 var movesHTML = document.querySelector('.moves');
 var stars = 3;
 var starsHTML = document.querySelector('.stars');
+
+//Variable containing decision if cards have been matched
+var final = false;
+
+//Variable restart
+var restart = document.querySelector('.restart');
 
 //Wait variable via Promise feature declared -
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -172,8 +175,6 @@ function closeCards(pos1, pos2) {
   listOfCards[pos2].classList.remove('show');
 }
 
-var final = false;
-
 function compare (pos1, pos2) {
   // console.log(listOfCards[pos1].children[0].classList[1]);
   // console.log(listOfCards[pos2].children[0].classList[1]);
@@ -216,7 +217,7 @@ function decision(dec) {
 }
 
 function gameWon() {
-  alert('CONGRATULATIONS! You have WON the game within '+ moves+ " moves");
+  alert('CONGRATULATIONS! You have WON the game within '+ moves+ " moves with " + stars + " rating!");
   gameInit();
 }
 
@@ -232,21 +233,36 @@ function updateMove() {
     movesHTML.textContent = moves;
 }
 
-function getStars() {
-  return stars;
-}
-
 function removeStar() {
-  stars -= 1;
   switch (stars) {
-
+    case 3 :
+      stars -= 1;
+      starsHTML.children[0].children[0].classList.remove("fa-star");
+      break;
+    case 2 :
+      stars -= 1;
+      starsHTML.children[1].children[0].classList.remove("fa-star");
+      break;
+    case 1 :
+      stars -= 1;
+      starsHTML.children[2].children[0].classList.remove("fa-star");
+      break;
+    case 0 :
+      break;
   }
 
   //starsHTML.
 }
 
-function updateStar() {
-  //starsHTML.
+function updateStars() {
+  stars = 3;
+  starsHTML.children[0].children[0].classList.add("fa-star");
+  starsHTML.children[1].children[0].classList.add("fa-star");
+  starsHTML.children[2].children[0].classList.add("fa-star");
+}
+
+function addRestartListener() {
+  restart.addEventListener('click', gameInit);
 }
 
 /*
@@ -270,3 +286,4 @@ function updateStar() {
 //Code which will fire during the page load
 cardInit ();
 addCardListener();
+addRestartListener();
