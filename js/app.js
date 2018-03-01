@@ -83,6 +83,8 @@ for (var i = 0; i <= 15; i++) {
 function respondToTheClick(evt) {
   //get card position
   var cardPosition = getCardPosition (evt);
+  console.log(cardPosition);
+
 
   //TODO:switch based on matched, turned, not turned
   switch (turnCard(cardPosition)) {
@@ -95,7 +97,31 @@ function respondToTheClick(evt) {
         match[0] = true;
         match[1] = cardPosition;
       } else {
-        compare(cardPosition, match[1]);
+        //comparing two cards
+        if (compare(cardPosition, match[1])) {
+          //cards are same
+          //mark cards as matched
+          matchCards(cardPosition, match[1]);
+          match[0] = false;
+          match[1] = -1;
+          //substract number of cards left
+          match[2] -= 2;
+
+          //check against last card and end game
+          if (match[2] === 0) {
+            //TODO: end game
+          };
+        } else {
+          //cards are different
+
+          //show cards for a while
+          wait(3000);  //3 seconds in milliseconds
+
+          //turn both cards
+          //closeCards(cardPosition, match[1]);
+          match[0] = false;
+          match[1] = -1;
+        }
         // if true
         // if false
         // if last card
@@ -136,19 +162,24 @@ function getCardPosition (evt) {
 //Set-up a function which turns the card
 function turnCard(position) {
   if (listOfCards[position].classList.contains('match')) {
+    //TODO:remove afterwards
     console.log('contains');
     return "matched";
-  } else if (listOfCards[position].classList.contains('open')){
-    return "front";
+  } else if (listOfCards[position].classList.contains('open')) {
+      //TODO:remove afterwards
+      console.log('front');
+      return "front";
   } else {
-    listOfCards[position].classList.toggle('open');
-    listOfCards[position].classList.toggle('show');
-    return "back";
+      listOfCards[position].classList.add('open');
+      listOfCards[position].classList.add('show');
+      //TODO:remove afterwards
+      console.log('back');
+      return "back";
   }
 }
 
 //Function closes both cards
-function closeCard(pos1, pos2) {
+function closeCards(pos1, pos2) {
   listOfCards[pos1].classList.remove('open');
   listOfCards[pos1].classList.remove('show');
   listOfCards[pos2].classList.remove('open');
@@ -156,8 +187,25 @@ function closeCard(pos1, pos2) {
 }
 
 function compare (pos1, pos2) {
-  console.log(listOfCards[pos1].children[0].classList[1]);
-  console.log(listOfCards[pos2].children[0].classList[1]);
+  // console.log(listOfCards[pos1].children[0].classList[1]);
+  // console.log(listOfCards[pos2].children[0].classList[1]);
+  if (listOfCards[pos1].children[0].classList[1] === listOfCards[pos2].children[0].classList[1]) {
+    return true;
+  } else return false;
+}
+
+function matchCards (pos1, pos2) {
+  listOfCards[pos1].classList.add('match');
+  listOfCards[pos2].classList.add('match');
+}
+
+//function from stackoverflow http://stackoverflow.com/questions/14226803
+function wait(ms){
+   var start = new Date().getTime();
+   var end = start;
+   while(end < start + ms) {
+     end = new Date().getTime();
+  }
 }
 
 /*
