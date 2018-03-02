@@ -2,19 +2,20 @@
 
 ## Table of Contents
 
-* [Instructions](#instructions)
-* [Contributing](#contributing)
+* [Game Set-Up](#gamesetup)
+* [How to play](#howtoplay)
+* [Winning](#winning)
 
-## Instructions
 
-The starter project has some HTML and CSS styling to display a static version of the Memory Game project. You'll need to convert this project from a static project to an interactive one. This will require modifying the HTML and CSS files, but primarily the JavaScript file.
+## Game Set-Up
 
-To get started, open `js/app.js` and start building out the app's functionality
+You can start the game by opening file index.html in your web-browser. Please use browser with support of ECMA script version 5 and later.
 
-For specific, detailed instructions, look at the project instructions in the [Udacity Classroom](https://classroom.udacity.com/me).
+## How to play
 
-## Contributing
+Game is played within the browser window with mouse(touch) only. Your goal is to match the five pairs of cards. You can restart and reshuffle the game using restart button.
 
-This repository is the starter code for _all_ Udacity students. Therefore, we most likely will not accept pull requests.
+## Winning
 
-For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
+Once all 8 pairs of cards are matched a congratulations pop-up is displayed with the number of moves (every two cards turned are counted as sinle move) and with elapsed time since begining opf the game.
+

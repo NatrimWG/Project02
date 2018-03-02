@@ -129,6 +129,7 @@ function respondToTheClick(evt) {
   }
 }
 
+//Function returns card position
 function getCardPosition (evt) {
   if (evt.target.tagName === 'LI') {
     let i = 0;
