@@ -108,10 +108,8 @@ function removeCardListener() {
 function respondToTheClick(evt) {
   //get card position
   var cardPosition = getCardPosition (evt);
-  //TODO: remove afterwards
-  console.log("Card position:",cardPosition);
 
-  //TODO:switch based on matched, turned, not turned
+  //Switch based on matched, turned, not turned
   switch (turnCard(cardPosition)) {
     case "matched" :
       break;
@@ -126,13 +124,6 @@ function respondToTheClick(evt) {
         cardPos2 = cardPosition;
         removeCardListener();
         wait(2000).then(() => decision(final)).catch(compare(cardPos1, cardPos2));
-        //update moves
-        moves += 1;
-        updateMove();
-        //update stars
-        if (moves % 20 === 0) {
-          removeStar();
-        }
       }
       break;
   }
@@ -154,21 +145,15 @@ function getCardPosition (evt) {
   }
 }
 
-//Set-up a function which turns the card
+//Function evaluates turned cards and returns the validation outcome of the turn
 function turnCard(position) {
   if (listOfCards[position].classList.contains('match')) {
-    //TODO:remove afterwards
-    console.log('contains');
     return "matched";
   } else if (listOfCards[position].classList.contains('open')) {
-      //TODO:remove afterwards
-      console.log('front');
       return "front";
   } else {
       listOfCards[position].classList.add('open');
       listOfCards[position].classList.add('show');
-      //TODO:remove afterwards
-      console.log('back');
       return "back";
   }
 }
@@ -199,23 +184,35 @@ function matchCards (pos1, pos2) {
 // Function executes the decision based on math or mis-match
 function decision(dec) {
   if (dec === true) {
-    console.log("Decision:",dec,"...Cards are same");
     //Cards are same - match them
     matchCards(cardPos1, cardPos2);
     match[0] = false;
     match[1] -= 2;
     addCardListener();
+    //update moves
+    moves += 1;
+    updateMove();
+    //update stars
+    if (moves % 20 === 0) {
+      removeStar();
+    }
     //Check if game ended - all cards are matched
     if (match[1] <= 0) {
       gameWon();
     }
 
   } else {
-      console.log("Decision:",dec,"...Cards are different");
       //Cards are different - turn them back
       closeCards(cardPos1, cardPos2);
       match[0] = false;
       addCardListener();
+      //update moves
+      moves += 1;
+      updateMove();
+      //update stars
+      if (moves % 20 === 0) {
+        removeStar();
+      }
     }
 }
 
@@ -236,6 +233,7 @@ function gameInit(){
   moves = 0;
   updateMove();
   totalSeconds = 0;
+  match[1] = 16;
 }
 
 // Function updates HTML with # of moves
