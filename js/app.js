@@ -45,8 +45,11 @@ var final = false;
 //Variable restart
 var restart = document.querySelector('.restart');
 
-//Variable timer
-const startTimer = new Date().getTime();
+//Variables related to timer
+//const startTimer = new Date().getTime();
+var minutesLabel = document.getElementById("minutes");
+var secondsLabel = document.getElementById("seconds");
+var totalSeconds = 0;
 
 //Wait variable via Promise feature declared -
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -178,25 +181,22 @@ function closeCards(pos1, pos2) {
   listOfCards[pos2].classList.remove('show');
 }
 
+//Function compares two cards
 function compare (pos1, pos2) {
-  // console.log(listOfCards[pos1].children[0].classList[1]);
-  // console.log(listOfCards[pos2].children[0].classList[1]);
   if (listOfCards[pos1].children[0].classList[1] === listOfCards[pos2].children[0].classList[1]) {
     final = true;
-    return true;
   } else {
       final = false;
-      return false;
   }
 }
 
-//Marks cards as matched
+//Function marks cards as matched - updates HTML
 function matchCards (pos1, pos2) {
   listOfCards[pos1].classList.add('match');
   listOfCards[pos2].classList.add('match');
 }
 
-//Executes the decision based on math or mis-match
+// Function executes the decision based on math or mis-match
 function decision(dec) {
   if (dec === true) {
     console.log("Decision:",dec,"...Cards are same");
@@ -219,23 +219,31 @@ function decision(dec) {
     }
 }
 
+// Function displays the CONGRATULATIONS message and calls gameInit function
 function gameWon() {
-  alert('CONGRATULATIONS! You have WON the game within '+ moves+ " moves with " + stars + " rating!");
+  let s = pad(totalSeconds % 60);
+  let m = pad(parseInt(totalSeconds / 60));
+
+  alert('CONGRATULATIONS!\nYou have WON the game within '+ moves+ " moves with " + stars + " stars rating!\nTotal time: " + m + "minutes " + s + "seconds");
   gameInit();
 }
 
+// Function is used after the Game is WON to re-initialize the game to starting values
 function gameInit(){
   cardInit ();
   stars = 3;
   updateStars();
   moves = 0;
   updateMove();
+  totalSeconds = 0;
 }
 
+// Function updates HTML with # of moves
 function updateMove() {
     movesHTML.textContent = moves;
 }
 
+// Function removes stars based on number of stars left
 function removeStar() {
   switch (stars) {
     case 3 :
@@ -246,27 +254,43 @@ function removeStar() {
       stars -= 1;
       starsHTML.children[1].children[0].classList.remove("fa-star");
       break;
-    case 1 :
-      stars -= 1;
-      starsHTML.children[2].children[0].classList.remove("fa-star");
-      break;
-    case 0 :
+    default :
       break;
   }
-
-  //starsHTML.
 }
 
+// Function adds missing stars after the game is won
 function updateStars() {
   stars = 3;
   starsHTML.children[0].children[0].classList.add("fa-star");
   starsHTML.children[1].children[0].classList.add("fa-star");
-  starsHTML.children[2].children[0].classList.add("fa-star");
 }
 
+// Function will add listner to restart element
 function addRestartListener() {
   restart.addEventListener('click', gameInit);
 }
+
+//Function timer counts seconds and minutes
+// Downloaded from https://stackoverflow.com/questions/5517597/plain-count-up-timer-in-javascript
+function setTime() {
+  ++totalSeconds;
+  secondsLabel.textContent = pad(totalSeconds % 60);
+  minutesLabel.textContent = pad(parseInt(totalSeconds / 60));
+  // setInterval(setTime, 1000);
+}
+
+//Function pad ensures value has number zero on "tens" when it is lower than ten
+// Downloaded from https://stackoverflow.com/questions/5517597/plain-count-up-timer-in-javascript
+function pad(val) {
+  var valString = val + "";
+  if (valString.length < 2) {
+    return "0" + valString;
+  } else {
+    return valString;
+  }
+}
+
 
 /*
  * Display the cards on the page
@@ -290,3 +314,4 @@ function addRestartListener() {
 cardInit ();
 addCardListener();
 addRestartListener();
+setInterval(setTime, 1000);
